@@ -4,6 +4,7 @@ const restartButton = document.querySelector("#restart");
 const winningLine = document.querySelector(".winning-line");
 
 let gameOver = false;
+let playerTurn = true;
 
 const winningPatterns = [
 
@@ -24,7 +25,7 @@ const winningPatterns = [
 cells.forEach((cell) => {
 
     cell.addEventListener("click", function () {
-        if (gameOver) {
+        if (gameOver || !playerTurn) {
             return;
         }
         if (cell.textContent !== "") {
@@ -33,14 +34,15 @@ cells.forEach((cell) => {
 
         cell.textContent = "X";
         cell.classList.add("x");
-
+        
         if (checkWinner()) {
             return;
         }
         if (checkDraw()) {
             return;
         }
-
+        
+        playerTurn = false;
         statusText.textContent = "Computer's Turn...";
 
         setTimeout(() => {
@@ -190,6 +192,7 @@ function computerMove() {
             return;
         }
 
+        playerTurn = true;
         statusText.textContent = "Your Turn (X)";
         return;
     }
@@ -217,6 +220,7 @@ function computerMove() {
         if (checkDraw()) {
             return;
         }
+        playerTurn = true;
         statusText.textContent = "Your Turn (X)";
         return;
     }
@@ -243,7 +247,7 @@ function computerMove() {
         if (checkDraw()) {
             return;
         }
-
+        playerTurn = true;
         statusText.textContent = "Your Turn (X)";
     }
 
@@ -276,6 +280,7 @@ function makeComputerMove(pattern) {
     if (checkDraw()) {
         return;
     }
+    playerTurn = true;
     statusText.textContent = "Your Turn (X)";
 }
 
@@ -293,5 +298,6 @@ restartButton.addEventListener("click", function () {
 
     winningLine.className = "winning-line";
     gameOver = false;
+    playerTurn = true;
     statusText.textContent = "Your Turn (X)";
 });
